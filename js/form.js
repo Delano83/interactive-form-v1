@@ -1,8 +1,6 @@
 //*Interactive Form Javascript*//
-//**Helper CSS Classes**//
-//is-hidden & clearfix
-//Global Variables
-//Create a function that sets focus on the first input field onload
+
+//When the DOM is ready, select the Credit Card option in the payment value and hide the Paypal and the Bitcoin option.
 $(document).ready(function() {
   $("#payment").children("option[value='credit card']").attr("selected", true);
   $("p:contains('Paypal')").hide();
@@ -12,13 +10,12 @@ $(document).ready(function() {
 
 });
 
+//When the page loads, give focus to the first text field
 $("input:text:visible:first").focus();
 
-//Create a function that hides the input field 'other' and show if option selected is "Other"
-//Add an ID of other-title
-$("form input[name=other]").attr('id', 'other-title');
-$("#other-title").hide();
 
+//A text field that will be revealed when the "Other" option is selected from the "Job Role" drop down menu.
+//I used the change event which is the same as .on('change', {handler})
 $("#title").change(function() {
   var end = $('#title option:selected').val();
   if (end === "other") {
@@ -28,13 +25,17 @@ $("#title").change(function() {
   }
 });
 
-//Create a function that hides the color option field
-//When the user checks one of the design options, make that field appear
-//When punch is selected, show the punch options, else show the I love JS options
+//Give the field an id of “other-title,” and add the placeholder text of "Your Job Role" to the field.
+$("form input[name=other]").attr('id', 'other-title');
+$("#other-title").hide();
+
+
+//Hide the "Color" label and select menu until a T-Shirt design is selected from the "Design" menu.
 $("#colors-js-puns").hide();
 
+//On change, create two object which are my options for the dropdown
 $("#design").change(function() {
-
+  //These are my options for the dropdown in an object
   var jspuns = {
     cornflowerblue: 'Cornflower Blue (JS Puns shirt only)',
     darkslategrey: 'Dark Slate Grey (JS Puns shirt only)',
@@ -47,13 +48,15 @@ $("#design").change(function() {
     dimgrey: 'Dim Grey (I &#9829; JS shirt only)'
   };
 
-  //this option selected
+//For the T-Shirt color menu, only display the color options that match the design selected in the "Design" menu
+//Show color option on change of design
   $("#colors-js-puns").show();
+//Remove all the options in the dropdown
   $("#color").children('option').remove();
 
   var mycolor = $('#color');
   var selectedDesign = $(this).val();
-
+//After removing all the option in the color dropdown, show only the one that correpond to the choosen style
   if (selectedDesign.indexOf("js puns") >= 0) {
     myJsPuns();
   } else if (selectedDesign.indexOf("heart js") >= 0) {
@@ -62,6 +65,7 @@ $("#design").change(function() {
     $("#colors-js-puns").hide();
   }
 
+//If the user selects "Theme - JS Puns" then the color menu should only display "Cornflower Blue," "Dark Slate Grey," and "Gold."
   function myJsPuns() {
     $.each(jspuns, function(val, text) {
       mycolor.append(
@@ -70,6 +74,7 @@ $("#design").change(function() {
     })
   };
 
+//If the user selects "Theme - I ♥ JS" then the color menu should only display "Tomato," "Steel Blue," and "Dim Grey."
   function myHeartJs() {
     $.each(heartjs, function(val, text) {
       mycolor.append(
@@ -79,21 +84,19 @@ $("#design").change(function() {
   };
 });
 
-
+//Little extra function to map and display the selected activities above the total price.
 function workshops() {
-
   var arr = $("input:checkbox:checked").map(function() {
     return $(this).closest("label").text();
   }).get();
   $(".myclasses").html("You enrolled for the following workshops: <br>" + arr.join("<br>"));
-}
-
-workshops();
-
+} workshops();
 $(".activities").delegate("input:checkbox", "click", workshops);
 
 
-
+//Some events are at the same time as others. If the user selects a workshop, don't allow selection of a workshop at the same date and time
+//Disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
+//Simple if else statements for the checkboxes that take care of disabling conflicting workshops and add the price to the total variable.
 $(".activities").on("click", function() {
   var total = 0;
   if ($("input[name='all']").is(":checked")) {
@@ -130,13 +133,13 @@ $(".activities").on("click", function() {
   if ($('input[name=npm]').is(":checked")) {
       total += 100;
   }
-  console.log(total);
   totalPrice(total);
 });
 
 
-//Create a running total function that selects the $ value of the selected checkbox and add it in an array
-//this function is disabling the selected activities in conflict
+//As a user selects activities, a running total should display below the list of checkboxes.
+//For example, if the user selects "Main Conference", then Total: $200 should appear.
+//If they add 1 workshop, the total should change to Total: $300
 function totalPrice(total) {
   if (typeof total !== 0) {
     $("#totalDiv").remove();
@@ -146,27 +149,26 @@ function totalPrice(total) {
   }
 }
 
-//Create a function that displays the CC div by default (onlad) and hides the two other options
-//Payment Info section of the form: display payment sections based on chosen payment option
+//Create function that will take care of hiding/showing the right payment options depending on the user selection
 $("#payment").change(function() {
     if ($(this).val() === "select_method") {
       $("#credit-card").hide();
       $("p:contains('Bitcoin')").hide();
       $("'p:contains('Paypal')").hide();
     }
-  //When a user selects the "PayPal" payment option, display the Paypal information, and hide the credit card information and the "Bitcoin" information.
+  //When "PayPal" is selected, display the Paypal and hide CC and bitcoin info
   if ($(this).val() === "paypal") {
     $("#credit-card").hide();
     $("p:contains('Bitcoin')").hide();
     $("p:contains('Paypal')").show();
   }
-  //When a user selects the "Bitcoin" payment option, display the Bitcoin information, and hide the credit card and paypal information.
+  //When "Bitcoin" is selected, display Bitcoin and hide CC and paypal
   if ($(this).val() === "bitcoin") {
     $("#credit-card").hide();
     $("p:contains('Paypal')").hide();
     $("p:contains('Bitcoin')").show();
   }
-  //When a user selects the CC payment option, display the credit card information, and hide the paypal and bitcoin information.
+  //When CC is selected, display the credit card information and hide the paypal and bitcoin info..
   if ($(this).val() === "credit card") {
     $("#credit-card").show();
     $("p:contains('Paypal')").hide();
@@ -175,7 +177,6 @@ $("#payment").change(function() {
 });
 
 //Check if credit card number is valid or not with the Luhn check algorithm
-
 function checkcc(number) {
   var len = number.length,
   mul = 0,
@@ -193,6 +194,10 @@ function checkcc(number) {
   return sum % 10 === 0 && sum > 0;
 };
 
+//Program at least one of your error messages so that more information is provided depending on the error.
+//This function does 4 different checks on submit and displays a custom error message.
+//To test all of the error messages out, try submitting the form with the following expressions: " ", "@", "123456", "510510510510510"
+//And finally, try these valid card numbers: "5105105105105100", "4111111111111111", "4012888888881881" or even your own card number!
 function validateCC() {
   var ccnum = $("#cc-num").val();
   if(ccnum.length < 1) {
@@ -208,7 +213,8 @@ function validateCC() {
   }
 }
 
-
+//Live email onkeyup verification based on the regex before submitting the form.
+//If the field is not empty and it does not pass the regex test, display error message. Otherwise, put default styling.
   $("#mail").keyup(function(){
   var email = $("#mail").val();
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -219,9 +225,10 @@ function validateCC() {
   }
 });
 
-//Give properties to each one of the fields (maxlength) and if any of them are wrong||empty, then disable the submit button
+//Give properties to each one of the fields and if any of them are wrong or empty, then prevent the form submission.
 function validateForm() {
 
+  //Name field can't be blank
   function validateName() {
   if ($("#name").val().length < 1) {
     $('html, body').animate({
@@ -234,6 +241,7 @@ function validateForm() {
     }
   } validateName();
 
+  //In the name field onkeyup, display or remove error message.
   $("#name").keyup(function(){
   if ($("#name").val().length > 0) {
     $("label[for=name]").text("Name:").css("color", "");
@@ -242,6 +250,7 @@ function validateForm() {
   }
   });
 
+//Validate email when you submit the form by passing the regex test.
   function validateEmail() {
     var email = $("#mail").val();
     if ($("#mail").val().length > 1) {
@@ -263,6 +272,7 @@ function validateForm() {
     }
   } validateActivities();
 
+//T-Shirt theme must be selected. If not, throw error.
   function validateShirtInfo() {
     if($("#design").val() === "Select Theme") {
         $("#validateShirt").remove();
@@ -270,11 +280,10 @@ function validateForm() {
     } else {
        $("#validateShirt").remove();
        $(".shirt legend").css("color", "#000");
-
     }
   } validateShirtInfo();
 
-  //Payment option must be selected.
+//Payment option must be selected.
   function validatePaymentOption() {
   if ($('#payment').val() === "select_method"){
       $("label[for=payment]").text("I'm going to pay with: Please select a payment option.").css("color", "red");
@@ -282,7 +291,7 @@ function validateForm() {
       $("label[for=payment]").text("I'm going to pay with:").css("color", "black");
         }
 } validatePaymentOption();
-
+//Must enter a valid zip number of 5 digits. The regex says "digits only"
   function validateZip() {
     var zipval = $('#zip').val();
     if (zipval.length !== 5 || /\D+/g.test(zipval)) {
@@ -291,7 +300,7 @@ function validateForm() {
       $("label[for=zip]").text("Zip Code:").css("color", "black");
     }
   } validateZip();
-
+//Must enter a valid CVV number of 3 digits. The regex says "digits only"
   function validateCVV() {
     var cvvval = $('#cvv').val();
     if (cvvval.length !== 3 || /\D+/g.test(cvvval)) {
@@ -300,14 +309,21 @@ function validateForm() {
       $("label[for=cvv]").text("CVV:").css("color", "black");
     }
   } validateCVV();
-
 }
-//Create all the if's for the display error messages
-
-//Add all elements
-
-$("button[type=submit]").click(function(event) {
-  event.preventDefault();
+//On sumbmit, prevent default and call all the form validation functions.
+/*$("button[type=submit]").click(function(e) {
+  e.preventDefault();
   validateForm();
   validateCC();
-});
+  if  {
+    return true;
+}
+});*/
+
+$("form").submit(function(e){
+    e.preventDefault();
+
+  console.log(validateForm());
+     validateCC();
+
+  });
