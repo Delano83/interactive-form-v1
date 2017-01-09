@@ -69,8 +69,8 @@ $("#design").change(function() {
       mycolor.append(
         $("<option></option>").val(val).html(text)
       );
-    })
-  };
+    });
+  }
 
 //If the user selects "Theme - I ♥ JS" then the color menu should only display "Tomato," "Steel Blue," and "Dim Grey."
   function myHeartJs() {
@@ -78,8 +78,8 @@ $("#design").change(function() {
       mycolor.append(
         $("<option></option>").val(val).html(text)
       );
-    })
-  };
+    });
+  }
 });
 
 //Little extra function to map and display the selected activities above the total price.
@@ -190,7 +190,7 @@ function checkcc(number) {
   }
 
   return sum % 10 === 0 && sum > 0;
-};
+}
 
 //Program at least one of your error messages so that more information is provided depending on the error.
 //This function does 4 different checks on submit and displays a custom error message.
@@ -208,6 +208,7 @@ function validateCC() {
     $("label[for=cc-num]").text("Card Number: Your card number is invalid.").css("color", "red");
   } else {
     $("label[for=cc-num]").text("Card Number:").css("color", "black");
+    return true;
   }
 }
 
@@ -315,10 +316,20 @@ function validateForm() {
       return true;
     }
   } validateCVV();
+
+//Return True if all fields are correct, else return false to prevent the submission of the form
+  if ($("#payment").val() === "credit card" && validateCVV() && validateZip() && validateCC() && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
+    return true;
+  } else if ($("#payment").val() === "bitcoin" || $("#payment").val() === "paypal" && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
+    return true;
+  } else {
+    return false;
+  }
 }
+
 //On sumbmit, prevent default and call all the form validation functions.
 $("form").submit(function(e){
-    e.preventDefault();
+  if(!validateForm()) {e.preventDefault();}
       validateForm();
       validateCC();
   });
