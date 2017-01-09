@@ -6,8 +6,6 @@ $(document).ready(function() {
   $("p:contains('Paypal')").hide();
   $("p:contains('Bitcoin')").hide();
   $("#credit-card").show();
-  $("#").hide();
-
 });
 
 //When the page loads, give focus to the first text field
@@ -17,7 +15,7 @@ $("input:text:visible:first").focus();
 //A text field that will be revealed when the "Other" option is selected from the "Job Role" drop down menu.
 //I used the change event which is the same as .on('change', {handler})
 $("#title").change(function() {
-  var end = $('#title option:selected').val();
+  var end = $("#title option:selected").val();
   if (end === "other") {
     $("#other-title").show();
   } else {
@@ -26,7 +24,7 @@ $("#title").change(function() {
 });
 
 //Give the field an id of “other-title,” and add the placeholder text of "Your Job Role" to the field.
-$("form input[name=other]").attr('id', 'other-title');
+$("form input[name=other]").attr("id", "other-title");
 $("#other-title").hide();
 
 
@@ -37,24 +35,24 @@ $("#colors-js-puns").hide();
 $("#design").change(function() {
   //These are my options for the dropdown in an object
   var jspuns = {
-    cornflowerblue: 'Cornflower Blue (JS Puns shirt only)',
-    darkslategrey: 'Dark Slate Grey (JS Puns shirt only)',
-    gold: 'Gold (JS Puns shirt only)'
+    cornflowerblue: "Cornflower Blue (JS Puns shirt only)",
+    darkslategrey: "Dark Slate Grey (JS Puns shirt only)",
+    gold: "Gold (JS Puns shirt only)"
   };
 
   var heartjs = {
-    tomato: 'Tomato (I &#9829; JS shirt only)',
-    steelblue: 'Steel Blue (I &#9829; JS shirt only)',
-    dimgrey: 'Dim Grey (I &#9829; JS shirt only)'
+    tomato: "Tomato (I &#9829; JS shirt only)",
+    steelblue: "Steel Blue (I &#9829; JS shirt only)",
+    dimgrey: "Dim Grey (I &#9829; JS shirt only)"
   };
 
 //For the T-Shirt color menu, only display the color options that match the design selected in the "Design" menu
 //Show color option on change of design
   $("#colors-js-puns").show();
 //Remove all the options in the dropdown
-  $("#color").children('option').remove();
+  $("#color").children("option").remove();
 
-  var mycolor = $('#color');
+  var mycolor = $("#color");
   var selectedDesign = $(this).val();
 //After removing all the option in the color dropdown, show only the one that correpond to the choosen style
   if (selectedDesign.indexOf("js puns") >= 0) {
@@ -69,7 +67,7 @@ $("#design").change(function() {
   function myJsPuns() {
     $.each(jspuns, function(val, text) {
       mycolor.append(
-        $('<option></option>').val(val).html(text)
+        $("<option></option>").val(val).html(text)
       );
     })
   };
@@ -78,7 +76,7 @@ $("#design").change(function() {
   function myHeartJs() {
     $.each(heartjs, function(val, text) {
       mycolor.append(
-        $('<option></option>').val(val).html(text)
+        $("<option></option>").val(val).html(text)
       );
     })
   };
@@ -127,10 +125,10 @@ $(".activities").on("click", function() {
     $("input[name='js-libs']").attr("disabled", false);
   }
 
-  if ($('input[name=build-tools]').is(":checked")) {
+  if ($("input[name=build-tools]").is(":checked")) {
       total += 100;
   }
-  if ($('input[name=npm]').is(":checked")) {
+  if ($("input[name=npm]").is(":checked")) {
       total += 100;
   }
   totalPrice(total);
@@ -238,6 +236,7 @@ function validateForm() {
       $("input:text:visible:first").focus();
     } else {
       $("label[for=name]").text("Name:").css("color", "");
+      return true;
     }
   } validateName();
 
@@ -245,6 +244,7 @@ function validateForm() {
   $("#name").keyup(function(){
   if ($("#name").val().length > 0) {
     $("label[for=name]").text("Name:").css("color", "");
+    return true;
   } else {
     $("label[for=name]").text("Name: (please provide your name)").css("color", "red");
   }
@@ -257,6 +257,7 @@ function validateForm() {
       var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
      if (regex.test(email)) {
         $("label[for=mail").text("Email:").css("color", "black");
+        return true;
       }
     } else {
         $("label[for=mail").text("Email: (please provide a valid email address)").css("color", "red");
@@ -269,6 +270,7 @@ function validateForm() {
         $(".activities legend").text("Register for activities: (please select an activity)").css("color", "red");
     } else {
           $(".activities legend").text("Register for activities:").css("color", "");
+          return true;
     }
   } validateActivities();
 
@@ -276,10 +278,11 @@ function validateForm() {
   function validateShirtInfo() {
     if($("#design").val() === "Select Theme") {
         $("#validateShirt").remove();
-        $(".shirt legend").append("<p id='validateShirt' style='font-size : 15px'>Please choose your T-Shirt</p>").css('color', '#ff0000');
+        $(".shirt legend").append("<p id='validateShirt' style='font-size : 15px'>Please choose your T-Shirt</p>").css("color", "#ff0000");
     } else {
        $("#validateShirt").remove();
        $(".shirt legend").css("color", "#000");
+       return true;
     }
   } validateShirtInfo();
 
@@ -289,41 +292,33 @@ function validateForm() {
       $("label[for=payment]").text("I'm going to pay with: Please select a payment option.").css("color", "red");
   } else {
       $("label[for=payment]").text("I'm going to pay with:").css("color", "black");
-        }
+      return true;
+    }
 } validatePaymentOption();
 //Must enter a valid zip number of 5 digits. The regex says "digits only"
   function validateZip() {
-    var zipval = $('#zip').val();
+    var zipval = $("#zip").val();
     if (zipval.length !== 5 || /\D+/g.test(zipval)) {
       $("label[for=zip]").text("Zip Code: Enter valid Zip").css("color", "red");
     } else {
       $("label[for=zip]").text("Zip Code:").css("color", "black");
+      return true;
     }
   } validateZip();
 //Must enter a valid CVV number of 3 digits. The regex says "digits only"
   function validateCVV() {
-    var cvvval = $('#cvv').val();
+    var cvvval = $("#cvv").val();
     if (cvvval.length !== 3 || /\D+/g.test(cvvval)) {
       $("label[for=cvv]").text("CVV: Enter valid CVV").css("color", "red");
     } else {
       $("label[for=cvv]").text("CVV:").css("color", "black");
+      return true;
     }
   } validateCVV();
 }
 //On sumbmit, prevent default and call all the form validation functions.
-/*$("button[type=submit]").click(function(e) {
-  e.preventDefault();
-  validateForm();
-  validateCC();
-  if  {
-    return true;
-}
-});*/
-
 $("form").submit(function(e){
     e.preventDefault();
-
-  console.log(validateForm());
-     validateCC();
-
+      validateForm();
+      validateCC();
   });
