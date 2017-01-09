@@ -1,7 +1,7 @@
 //*Interactive Form Javascript*//
 
 //When the DOM is ready, select the Credit Card option in the payment value and hide the Paypal and the Bitcoin option.
-$(document).ready(function() {
+$(function() {
   $("#payment").children("option[value='credit card']").attr("selected", true);
   $("p:contains('Paypal')").hide();
   $("p:contains('Bitcoin')").hide();
