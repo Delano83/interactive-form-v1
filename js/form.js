@@ -300,7 +300,7 @@ function validateForm() {
   function validateZip() {
     var zipval = $("#zip").val();
     if (zipval.length !== 5 || /\D+/g.test(zipval)) {
-      $("label[for=zip]").text("Zip Code: Enter valid Zip").css("color", "red");
+      $("label[for=zip]").text("Zip Code: Invalid Zip").css({'color': 'red', 'font-size': '15px'});
     } else {
       $("label[for=zip]").text("Zip Code:").css("color", "black");
       return true;
@@ -310,7 +310,7 @@ function validateForm() {
   function validateCVV() {
     var cvvval = $("#cvv").val();
     if (cvvval.length !== 3 || /\D+/g.test(cvvval)) {
-      $("label[for=cvv]").text("CVV: Enter valid CVV").css("color", "red");
+      $("label[for=cvv]").text("CVV: Invalid CVV").css({'color': 'red', 'font-size': '15px'});
     } else {
       $("label[for=cvv]").text("CVV:").css("color", "black");
       return true;
