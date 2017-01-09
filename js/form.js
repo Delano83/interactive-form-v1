@@ -318,9 +318,10 @@ function validateForm() {
   } validateCVV();
 
 //Return True if all fields are correct, else return false to prevent the submission of the form
-  if ($("#payment").val() === "credit card" && validateCVV() && validateZip() && validateCC() && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
+var paymentVal = $("#payment").val();
+  if (paymentVal === "credit card" && validateCVV() && validateZip() && validateCC() && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
     return true;
-  } else if ($("#payment").val() === "bitcoin" || $("#payment").val() === "paypal" && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
+  } else if (paymentVal === "bitcoin" || paymentVal === "paypal" && validateShirtInfo() && validateActivities() && validateEmail() && validateName()) {
     return true;
   } else {
     return false;
